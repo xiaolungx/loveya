@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Ti 🌷</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Playfair+Display:ital,wght@0,400;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #f0c040;
+    --amber: #d4980a;
+    --brown: #6b3e08;
+    --green: #3a6628;
+    --green-light: #5ea040;
+    --cream: #fdf9ee;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--cream); font-family:'Cormorant Garamond',serif; overflow-x:hidden; cursor:none; min-height:100vh; }
+
+  .cursor { width:14px; height:14px; background:var(--gold); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); mix-blend-mode:multiply; transition:transform 0.08s; }
+
+  body::before { content:''; position:fixed; inset:0;
+    background: radial-gradient(ellipse at 20% 15%, rgba(240,192,64,0.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 80%, rgba(212,152,10,0.09) 0%, transparent 55%);
+    pointer-events:none; z-index:0; }
+
+  /* ---- PETALS ---- */
+  .petal { position:fixed; opacity:0; pointer-events:none; z-index:1; animation:fallPetal linear infinite; }
+  @keyframes fallPetal {
+    0%   { transform:translateY(-30px) rotate(0deg); opacity:0; }
+    10%  { opacity:0.6; }
+    90%  { opacity:0.4; }
+    100% { transform:translateY(110vh) rotate(360deg); opacity:0; }
+  }
+
+  /* ---- HERO ---- */
+  .hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; padding:60px 20px 40px; }
+
+  .main-flower-wrap { position:relative; z-index:10; animation:float 5s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0) rotate(-1deg)} 50%{transform:translateY(-14px) rotate(1deg)} }
+
+  /* ---- TITLE ---- */
+  .card { position:relative; z-index:10; text-align:center; margin-top:34px; max-width:540px; }
+  .card h1 { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2.2rem,5.5vw,3.6rem); color:var(--brown); line-height:1.2; animation:fadeUp 1.1s ease both 0.3s; }
+  .card h1 span { color:var(--amber); display:inline-block; animation:pulse 2.8s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+  .divider { margin:18px auto; width:70px; height:2px; background:linear-gradient(90deg,transparent,var(--amber),transparent); animation:fadeUp 1.1s ease both 0.6s; }
+  .card p { font-size:clamp(1rem,2.4vw,1.25rem); color:#6b4a15; line-height:1.9; font-weight:300; animation:fadeUp 1.1s ease both 0.9s; }
+  .card p em { font-style:italic; color:var(--amber); }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ---- GARDEN ---- */
+  .garden { position:relative; z-index:5; padding:40px 20px 60px; text-align:center; }
+  .garden-title { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(1.2rem,2.8vw,1.8rem); color:var(--brown); margin-bottom:44px; opacity:0; animation:fadeUp 1s ease forwards 1.4s; }
+
+  .flowers-row { display:flex; justify-content:center; align-items:flex-end; gap:clamp(14px,3.5vw,36px); flex-wrap:nowrap; }
+
+  .fi { display:flex; flex-direction:column; align-items:center; opacity:0; animation:bloomIn 0.75s cubic-bezier(0.34,1.5,0.64,1) forwards; }
+  .fi:nth-child(1){animation-delay:1.6s}
+  .fi:nth-child(2){animation-delay:1.85s}
+  .fi:nth-child(3){animation-delay:2.1s}
+  .fi:nth-child(4){animation-delay:2.35s}
+  .fi:nth-child(5){animation-delay:2.6s}
+  .fi:nth-child(6){animation-delay:2.85s}
+  @keyframes bloomIn { from{opacity:0;transform:scale(0.2) translateY(20px)} to{opacity:1;transform:scale(1) translateY(0)} }
+  .fi svg { transition:transform 0.35s cubic-bezier(0.34,1.5,0.64,1), filter 0.3s; display:block; }
+  .fi:hover svg { transform:scale(1.14) rotate(-3deg); filter:drop-shadow(0 10px 22px rgba(180,130,0,0.45)); }
+
+  /* ---- MESSAGE ---- */
+  .message-section { position:relative; z-index:10; padding:10px 20px 80px; display:flex; justify-content:center; }
+  .message-card { background:linear-gradient(135deg,#fffdf0,#fff8d4); border:1.5px solid rgba(240,192,64,0.3); border-radius:20px; padding:clamp(26px,5vw,50px) clamp(22px,6vw,58px); max-width:560px; text-align:center; box-shadow:0 4px 30px rgba(180,130,0,0.09),0 1px 0 rgba(255,255,255,0.9) inset; position:relative; overflow:hidden; opacity:0; animation:fadeUp 1s ease forwards 3.1s; }
+  .message-card::before { content:'❝'; position:absolute; top:6px; left:16px; font-size:5rem; color:rgba(240,192,64,0.14); font-family:serif; line-height:1; }
+  .message-card blockquote { font-size:clamp(1rem,2.4vw,1.25rem); color:#5a3a08; line-height:2; font-style:italic; font-weight:300; position:relative; z-index:1; }
+  .message-card .sig { margin-top:22px; font-family:'Playfair Display',serif; font-style:italic; font-size:1.05rem; color:var(--amber); }
+  .cf { position:absolute; font-size:1.4rem; opacity:0.25; }
+  .cf.tl{top:10px;left:10px} .cf.tr{top:10px;right:10px} .cf.bl{bottom:10px;left:10px} .cf.br{bottom:10px;right:10px}
+
+  /* ---- SPARKLE ---- */
+  .sparkle { position:fixed; border-radius:50%; pointer-events:none; z-index:9998; animation:spk 0.65s ease forwards; }
+  @keyframes spk { 0%{transform:translate(-50%,-50%) scale(1);opacity:1} 100%{transform:translate(-50%,-50%) scale(0);opacity:0} }
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+
+<!-- ===== HERO: BIG TULIP ===== -->
+<section class="hero">
+  <div class="main-flower-wrap">
+    <svg width="200" height="300" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 18px 36px rgba(180,130,0,0.35))">
+      <defs>
+        <linearGradient id="tp_center" x1="20%" y1="0%" x2="80%" y2="100%">
+          <stop offset="0%" stop-color="#fff9b0"/>
+          <stop offset="45%" stop-color="#f5c818"/>
+          <stop offset="100%" stop-color="#c88a08"/>
+        </linearGradient>
+        <linearGradient id="tp_left" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ffe566"/>
+          <stop offset="100%" stop-color="#d4960a"/>
+        </linearGradient>
+        <linearGradient id="tp_right" x1="100%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#fff090"/>
+          <stop offset="100%" stop-color="#b87808"/>
+        </linearGradient>
+        <linearGradient id="stem_g" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#4a7a2a"/>
+          <stop offset="50%" stop-color="#72b04a"/>
+          <stop offset="100%" stop-color="#4a7a2a"/>
+        </linearGradient>
+      </defs>
+
+      <!-- STEM -->
+      <path d="M100,220 C98,240 96,260 100,290" stroke="url(#stem_g)" stroke-width="7" fill="none" stroke-linecap="round"/>
+
+      <!-- LEFT LEAF -->
+      <path d="M98,240 C82,228 60,230 58,246 C72,238 88,240 100,250 Z" fill="#5ea040" opacity="0.9"/>
+      <!-- RIGHT LEAF -->
+      <path d="M102,255 C118,242 142,244 143,260 C129,252 113,254 101,264 Z" fill="#4a7a2a" opacity="0.9"/>
+
+      <!-- LEFT OUTER PETAL -->
+      <path d="M100,200
+               C100,200 68,195 52,168
+               C38,144 44,110 58,96
+               C64,90 72,88 78,94
+               C86,102 88,124 92,150
+               C95,170 98,190 100,200 Z"
+        fill="url(#tp_left)"/>
+
+      <!-- RIGHT OUTER PETAL -->
+      <path d="M100,200
+               C100,200 132,195 148,168
+               C162,144 156,110 142,96
+               C136,90 128,88 122,94
+               C114,102 112,124 108,150
+               C105,170 102,190 100,200 Z"
+        fill="url(#tp_right)"/>
+
+      <!-- CENTER PETAL -->
+      <path d="M100,200
+               C95,180 88,148 90,118
+               C92,94 96,72 100,60
+               C104,72 108,94 110,118
+               C112,148 105,180 100,200 Z"
+        fill="url(#tp_center)"/>
+
+      <!-- Petal highlight lines -->
+      <path d="M100,195 C99,165 97,130 98,100" stroke="#fff9c0" stroke-width="1.5" fill="none" opacity="0.5" stroke-linecap="round"/>
+      <path d="M83,180 C80,155 76,120 80,96" stroke="#fff0a0" stroke-width="1" fill="none" opacity="0.35" stroke-linecap="round"/>
+      <path d="M117,180 C120,155 124,120 120,96" stroke="#fff0a0" stroke-width="1" fill="none" opacity="0.35" stroke-linecap="round"/>
+
+      <!-- Petal tips curved in -->
+      <path d="M58,96 C62,86 72,82 78,90" stroke="#c88a08" stroke-width="1.5" fill="none" opacity="0.4"/>
+      <path d="M142,96 C138,86 128,82 122,90" stroke="#c88a08" stroke-width="1.5" fill="none" opacity="0.4"/>
+    </svg>
+  </div>
+
+  <div class="card">
+    <h1>Para ti, <span>mi amor</span> 🌷</h1>
+    <div class="divider"></div>
+    <p>Las flores amarillas son símbolo de <em>alegría</em>, de <em>calidez</em><br>y del amor más sincero que puedo darte.</p>
+  </div>
+</section>
+
+<!-- ===== GARDEN ===== -->
+<section class="garden">
+  <h2 class="garden-title">Un jardín solo para ti ✨</h2>
+  <div class="flowers-row">
+
+    <!-- 1. TULIP -->
+    <div class="fi">
+      <svg width="64" height="120" viewBox="0 0 64 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="g_t1" x1="20%" y1="0%" x2="80%" y2="100%"><stop offset="0%" stop-color="#fff9b0"/><stop offset="50%" stop-color="#f5c818"/><stop offset="100%" stop-color="#c88a08"/></linearGradient>
+          <linearGradient id="g_tl1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffe566"/><stop offset="100%" stop-color="#d49008"/></linearGradient>
+          <linearGradient id="g_tr1" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fff090"/><stop offset="100%" stop-color="#b87808"/></linearGradient>
+        </defs>
+        <path d="M32,78 C30,90 29,104 32,118" stroke="#4a7a2a" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M31,94 C24,88 14,90 14,98 C20,94 28,95 32,100 Z" fill="#5ea040" opacity="0.9"/>
+        <!-- left petal -->
+        <path d="M32,72 C32,72 18,69 10,53 C4,40 8,22 17,14 C21,10 26,10 29,15 C32,21 32,42 32,72 Z" fill="url(#g_tl1)"/>
+        <!-- right petal -->
+        <path d="M32,72 C32,72 46,69 54,53 C60,40 56,22 47,14 C43,10 38,10 35,15 C32,21 32,42 32,72 Z" fill="url(#g_tr1)"/>
+        <!-- center petal -->
+        <path d="M32,72 C29,55 27,36 28,20 C29,11 32,4 32,4 C32,4 35,11 36,20 C37,36 35,55 32,72 Z" fill="url(#g_t1)"/>
+        <path d="M32,68 C31,50 31,28 32,12" stroke="#fff9c0" stroke-width="1.2" fill="none" opacity="0.45" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- 2. ROSE -->
+    <div class="fi">
+      <svg width="70" height="120" viewBox="0 0 70 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="g_ro1" cx="45%" cy="35%" r="65%"><stop offset="0%" stop-color="#fffabc"/><stop offset="55%" stop-color="#f5c818"/><stop offset="100%" stop-color="#b07808"/></radialGradient>
+          <radialGradient id="g_ro2" cx="55%" cy="30%" r="65%"><stop offset="0%" stop-color="#ffe566"/><stop offset="60%" stop-color="#e0a800"/><stop offset="100%" stop-color="#9a6008"/></radialGradient>
+        </defs>
+        <!-- stem -->
+        <path d="M35,90 C33,100 32,110 35,118" stroke="#4a7a2a" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <!-- leaves -->
+        <path d="M34,100 C26,94 14,96 14,104 C21,99 30,100 35,107 Z" fill="#5ea040" opacity="0.9"/>
+        <path d="M36,108 C44,102 56,104 56,112 C49,107 38,109 35,115 Z" fill="#4a7a2a" opacity="0.85"/>
+        <!-- outer petals -->
+        <path d="M35,80 C20,83 10,70 12,57 C14,46 24,42 33,50 C35,52 35,65 35,80 Z" fill="url(#g_ro1)" opacity="0.88"/>
+        <path d="M35,80 C50,83 60,70 58,57 C56,46 46,42 37,50 C35,52 35,65 35,80 Z" fill="url(#g_ro2)" opacity="0.88"/>
+        <path d="M35,74 C22,72 15,60 18,48 C20,38 30,34 35,44 C35,54 35,66 35,74 Z" fill="url(#g_ro1)" opacity="0.91"/>
+        <path d="M35,74 C48,72 55,60 52,48 C50,38 40,34 35,44 C35,54 35,66 35,74 Z" fill="url(#g_ro2)" opacity="0.91"/>
+        <!-- top petals -->
+        <path d="M35,70 C24,66 18,52 22,40 C26,30 35,28 35,40 C35,52 35,64 35,70 Z" fill="#ffe566" opacity="0.93"/>
+        <path d="M35,70 C46,66 52,52 48,40 C44,30 35,28 35,40 C35,52 35,64 35,70 Z" fill="#f5c818" opacity="0.93"/>
+        <!-- inner -->
+        <path d="M35,66 C26,64 22,54 24,44 C26,36 33,34 35,42 C35,52 35,62 35,66 Z" fill="url(#g_ro1)" opacity="0.96"/>
+        <path d="M35,66 C44,64 48,54 46,44 C44,36 37,34 35,42 C35,52 35,62 35,66 Z" fill="url(#g_ro2)" opacity="0.96"/>
+        <!-- bud center -->
+        <ellipse cx="35" cy="44" rx="8" ry="9" fill="#f5c818"/>
+        <ellipse cx="35" cy="44" rx="4" ry="5" fill="#cc8c08"/>
+        <path d="M35,38 C33,40 32,43 33,46 C34,48 35,49 35,47 C35,45 36,41 35,38 Z" fill="#fffabc" opacity="0.6"/>
+      </svg>
+    </div>
+
+    <!-- 3. SUNFLOWER -->
+    <div class="fi">
+      <svg width="74" height="120" viewBox="0 0 74 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="g_sc" cx="50%" cy="40%" r="55%"><stop offset="0%" stop-color="#b86818"/><stop offset="65%" stop-color="#7a3e08"/><stop offset="100%" stop-color="#4a2004"/></radialGradient>
+          <radialGradient id="g_sp" cx="50%" cy="20%" r="80%"><stop offset="0%" stop-color="#fff090"/><stop offset="55%" stop-color="#f5c518"/><stop offset="100%" stop-color="#c89010"/></radialGradient>
+        </defs>
+        <!-- stem -->
+        <path d="M37,84 C35,96 34,108 37,118" stroke="#4a7a2a" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M36,96 C28,90 16,92 16,100 C23,95 32,97 37,103 Z" fill="#5ea040" opacity="0.9"/>
+        <path d="M38,108 C46,102 58,104 57,112 C50,107 40,109 37,115 Z" fill="#4a7a2a" opacity="0.85"/>
+        <!-- outer petals (12) -->
+        <g>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="url(#g_sp)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="url(#g_sp)" transform="rotate(30 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="url(#g_sp)" transform="rotate(60 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="#ffe566" transform="rotate(90 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="url(#g_sp)" transform="rotate(120 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="url(#g_sp)" transform="rotate(150 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="url(#g_sp)" transform="rotate(180 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="#ffe566" transform="rotate(210 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="url(#g_sp)" transform="rotate(240 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="url(#g_sp)" transform="rotate(270 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="url(#g_sp)" transform="rotate(300 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="#ffe566" transform="rotate(330 37 54)"/>
+        </g>
+        <!-- center disc -->
+        <circle cx="37" cy="54" r="18" fill="url(#g_sc)"/>
+        <!-- seeds -->
+        <g opacity="0.3" fill="#ffe0a0">
+          <circle cx="37" cy="45" r="2"/><circle cx="43" cy="47" r="2"/><circle cx="47" cy="52" r="2"/>
+          <circle cx="46" cy="58" r="2"/><circle cx="42" cy="63" r="2"/><circle cx="37" cy="65" r="2"/>
+          <circle cx="32" cy="63" r="2"/><circle cx="28" cy="58" r="2"/><circle cx="27" cy="52" r="2"/>
+          <circle cx="31" cy="47" r="2"/><circle cx="37" cy="50" r="1.5"/><circle cx="41" cy="52" r="1.5"/>
+          <circle cx="42" cy="57" r="1.5"/><circle cx="39" cy="61" r="1.5"/><circle cx="34" cy="61" r="1.5"/>
+          <circle cx="32" cy="57" r="1.5"/><circle cx="32" cy="52" r="1.5"/>
+        </g>
+        <!-- center shine -->
+        <ellipse cx="31" cy="47" rx="7" ry="5" fill="rgba(255,220,100,0.12)" transform="rotate(-20 31 47)"/>
+      </svg>
+    </div>
+
+    <!-- 4. TULIP -->
+    <div class="fi">
+      <svg width="64" height="120" viewBox="0 0 64 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="g_t2" x1="20%" y1="0%" x2="80%" y2="100%"><stop offset="0%" stop-color="#fff9b0"/><stop offset="50%" stop-color="#f5c818"/><stop offset="100%" stop-color="#c88a08"/></linearGradient>
+          <linearGradient id="g_tl2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffe566"/><stop offset="100%" stop-color="#d49008"/></linearGradient>
+          <linearGradient id="g_tr2" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fff090"/><stop offset="100%" stop-color="#b87808"/></linearGradient>
+        </defs>
+        <path d="M32,78 C30,90 29,104 32,118" stroke="#4a7a2a" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M31,94 C24,88 13,90 13,98 C20,93 28,95 32,101 Z" fill="#5ea040" opacity="0.9"/>
+        <path d="M33,106 C40,100 51,102 51,110 C44,105 35,108 32,113 Z" fill="#4a7a2a" opacity="0.85"/>
+        <path d="M32,72 C32,72 18,69 10,53 C4,40 8,22 17,14 C21,10 26,10 29,15 C32,21 32,42 32,72 Z" fill="url(#g_tl2)"/>
+        <path d="M32,72 C32,72 46,69 54,53 C60,40 56,22 47,14 C43,10 38,10 35,15 C32,21 32,42 32,72 Z" fill="url(#g_tr2)"/>
+        <path d="M32,72 C29,55 27,36 28,20 C29,11 32,4 32,4 C32,4 35,11 36,20 C37,36 35,55 32,72 Z" fill="url(#g_t2)"/>
+        <path d="M32,68 C31,50 31,28 32,12" stroke="#fff9c0" stroke-width="1.2" fill="none" opacity="0.45" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- 5. ROSE -->
+    <div class="fi">
+      <svg width="70" height="120" viewBox="0 0 70 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="g_ro3" cx="45%" cy="35%" r="65%"><stop offset="0%" stop-color="#fffabc"/><stop offset="55%" stop-color="#f5c818"/><stop offset="100%" stop-color="#b07808"/></radialGradient>
+          <radialGradient id="g_ro4" cx="55%" cy="30%" r="65%"><stop offset="0%" stop-color="#ffe566"/><stop offset="60%" stop-color="#e0a800"/><stop offset="100%" stop-color="#9a6008"/></radialGradient>
+        </defs>
+        <path d="M35,90 C33,100 32,110 35,118" stroke="#4a7a2a" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M34,100 C26,94 14,96 14,104 C21,99 30,100 35,107 Z" fill="#5ea040" opacity="0.9"/>
+        <path d="M36,108 C44,102 56,104 56,112 C49,107 38,109 35,115 Z" fill="#4a7a2a" opacity="0.85"/>
+        <path d="M35,80 C20,83 10,70 12,57 C14,46 24,42 33,50 C35,52 35,65 35,80 Z" fill="url(#g_ro3)" opacity="0.88"/>
+        <path d="M35,80 C50,83 60,70 58,57 C56,46 46,42 37,50 C35,52 35,65 35,80 Z" fill="url(#g_ro4)" opacity="0.88"/>
+        <path d="M35,74 C22,72 15,60 18,48 C20,38 30,34 35,44 C35,54 35,66 35,74 Z" fill="url(#g_ro3)" opacity="0.91"/>
+        <path d="M35,74 C48,72 55,60 52,48 C50,38 40,34 35,44 C35,54 35,66 35,74 Z" fill="url(#g_ro4)" opacity="0.91"/>
+        <path d="M35,70 C24,66 18,52 22,40 C26,30 35,28 35,40 C35,52 35,64 35,70 Z" fill="#ffe566" opacity="0.93"/>
+        <path d="M35,70 C46,66 52,52 48,40 C44,30 35,28 35,40 C35,52 35,64 35,70 Z" fill="#f5c818" opacity="0.93"/>
+        <path d="M35,66 C26,64 22,54 24,44 C26,36 33,34 35,42 C35,52 35,62 35,66 Z" fill="url(#g_ro3)" opacity="0.96"/>
+        <path d="M35,66 C44,64 48,54 46,44 C44,36 37,34 35,42 C35,52 35,62 35,66 Z" fill="url(#g_ro4)" opacity="0.96"/>
+        <ellipse cx="35" cy="44" rx="8" ry="9" fill="#f5c818"/>
+        <ellipse cx="35" cy="44" rx="4" ry="5" fill="#cc8c08"/>
+        <path d="M35,38 C33,40 32,43 33,46 C34,48 35,49 35,47 C35,45 36,41 35,38 Z" fill="#fffabc" opacity="0.6"/>
+      </svg>
+    </div>
+
+    <!-- 6. SUNFLOWER -->
+    <div class="fi">
+      <svg width="74" height="120" viewBox="0 0 74 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="g_sc2" cx="50%" cy="40%" r="55%"><stop offset="0%" stop-color="#b86818"/><stop offset="65%" stop-color="#7a3e08"/><stop offset="100%" stop-color="#4a2004"/></radialGradient>
+          <radialGradient id="g_sp2" cx="50%" cy="20%" r="80%"><stop offset="0%" stop-color="#fff090"/><stop offset="55%" stop-color="#f5c518"/><stop offset="100%" stop-color="#c89010"/></radialGradient>
+        </defs>
+        <path d="M37,84 C35,96 34,108 37,118" stroke="#4a7a2a" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M36,96 C28,90 16,92 16,100 C23,95 32,97 37,103 Z" fill="#5ea040" opacity="0.9"/>
+        <path d="M38,108 C46,102 58,104 57,112 C50,107 40,109 37,115 Z" fill="#4a7a2a" opacity="0.85"/>
+        <g>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="url(#g_sp2)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="url(#g_sp2)" transform="rotate(30 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="#ffe566" transform="rotate(60 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="url(#g_sp2)" transform="rotate(90 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="url(#g_sp2)" transform="rotate(120 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="#ffe566" transform="rotate(150 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="url(#g_sp2)" transform="rotate(180 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="url(#g_sp2)" transform="rotate(210 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="#ffe566" transform="rotate(240 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="url(#g_sp2)" transform="rotate(270 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="url(#g_sp2)" transform="rotate(300 37 54)"/>
+          <ellipse cx="37" cy="20" rx="6" ry="18" fill="#ffe566" transform="rotate(330 37 54)"/>
+        </g>
+        <circle cx="37" cy="54" r="18" fill="url(#g_sc2)"/>
+        <g opacity="0.3" fill="#ffe0a0">
+          <circle cx="37" cy="45" r="2"/><circle cx="43" cy="47" r="2"/><circle cx="47" cy="52" r="2"/>
+          <circle cx="46" cy="58" r="2"/><circle cx="42" cy="63" r="2"/><circle cx="37" cy="65" r="2"/>
+          <circle cx="32" cy="63" r="2"/><circle cx="28" cy="58" r="2"/><circle cx="27" cy="52" r="2"/>
+          <circle cx="31" cy="47" r="2"/><circle cx="37" cy="50" r="1.5"/><circle cx="41" cy="52" r="1.5"/>
+          <circle cx="42" cy="57" r="1.5"/><circle cx="39" cy="61" r="1.5"/><circle cx="34" cy="61" r="1.5"/>
+          <circle cx="32" cy="57" r="1.5"/><circle cx="32" cy="52" r="1.5"/>
+        </g>
+        <ellipse cx="31" cy="47" rx="7" ry="5" fill="rgba(255,220,100,0.12)" transform="rotate(-20 31 47)"/>
+      </svg>
+    </div>
+
+  </div>
+</section>
+
+<!-- MESSAGE -->
+<section class="message-section">
+  <div class="message-card">
+    <span class="cf tl">🌷</span><span class="cf tr">🌼</span>
+    <span class="cf bl">🌻</span><span class="cf br">🌷</span>
+    <blockquote>
+      Quizás hoy no pude poner flores amarillas en tus manos,
+      pero cada flor de este jardín lleva todo lo que siento por ti.<br><br>
+      Las rosas para decirte que eres mi alegría más grande,
+      los tulipanes que mi amor florece cada día,
+      y los girasoles que siempre busco tu luz. 💛
+    </blockquote>
+    <div class="sig">— Con todo mi amor, para ti 🌷🌻🌹</div>
+  </div>
+</section>
+
+<script>
+  // Petals
+  for(let i=0;i<20;i++){
+    const p=document.createElement('div'); p.className='petal';
+    p.style.left=Math.random()*100+'vw';
+    p.style.top=(Math.random()*-15)+'vh';
+    p.style.animationDuration=(8+Math.random()*10)+'s';
+    p.style.animationDelay=(Math.random()*12)+'s';
+    const s=6+Math.random()*11; p.style.width=s+'px'; p.style.height=(s*1.4)+'px';
+    p.style.background=['#f5c818','#ffe566','#d4980a','#fff5a0','#e8b010'][Math.floor(Math.random()*5)];
+    p.style.borderRadius=Math.random()>.5?'50% 50% 50% 0':'60% 40% 55% 45%';
+    document.body.appendChild(p);
+  }
+  // Cursor
+  const cur=document.getElementById('cursor');
+  document.addEventListener('mousemove',e=>{ cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px'; });
+  // Sparkles
+  document.addEventListener('click',e=>{
+    for(let i=0;i<8;i++){
+      const s=document.createElement('div'); s.className='sparkle';
+      s.style.left=e.clientX+(Math.random()-.5)*44+'px';
+      s.style.top=e.clientY+(Math.random()-.5)*44+'px';
+      const sz=4+Math.random()*8; s.style.width=s.style.height=sz+'px';
+      s.style.background=['#f5c818','#ffe566','#e8a800','#fffabc'][Math.floor(Math.random()*4)];
+      document.body.appendChild(s); setTimeout(()=>s.remove(),700);
+    }
+  });
+</script>
+</body>
+</html>
